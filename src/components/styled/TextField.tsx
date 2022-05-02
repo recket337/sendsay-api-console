@@ -2,7 +2,6 @@ import { FC } from "react";
 import styled from "styled-components";
 
 type TextFieldProps = {
-  children?: any;
   width?: string;
   isError?: boolean;
   disabled?: boolean;

@@ -32,3 +32,30 @@
   line-height: 20px;
   color: #999999;
 }
+
+.requestError {
+  display: flex;
+  padding: 10px 12px;
+  gap: 10px;
+  background: rgba(207, 44, 0, 0.1);
+  border-radius: 5px;
+  font-family: "SF Pro Text";
+  .icon {
+    margin-top: 5px;
+    height: 20px;
+  }
+  .info {
+    color: #cf2c00;
+    font-weight: 400;
+    &__title {
+      font-size: 18px;
+      line-height: 30px;
+    }
+    &__body {
+      font-style: normal;
+      font-size: 12px;
+      line-height: 20px;
+      opacity: 0.5;
+    }
+  }
+}
