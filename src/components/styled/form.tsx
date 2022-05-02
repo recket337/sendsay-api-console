@@ -1,11 +1,16 @@
 import styled from "styled-components";
 
-const Link = styled.form`
+// w, h can be changable in future
+
+const Form = styled.form`
   width: 520px;
-  height: 425px;
   background: #ffffff;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `;
 
-export default Link;
+export default Form;
