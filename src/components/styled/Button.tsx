@@ -1,5 +1,6 @@
 import { FC } from "react";
 import styled from "styled-components";
+import { Spinner } from "./Spinner";
 
 type ButtonProps = {
   children?: any;
@@ -50,7 +51,7 @@ const Button: FC<
 > = (props) => {
   return (
     <StyledButton disabled={props.disabled ?? props.isLoading} {...props}>
-      {props.isLoading ? "loading" : props.children}
+      {props.isLoading ? <Spinner /> : props.children}
     </StyledButton>
   );
 };

@@ -1,6 +1,6 @@
 import { FC } from "react";
 import styled from "styled-components";
-import meh from "./../../assets/img/meh.svg";
+import meh from "./../../../assets/img/meh.svg";
 
 type PropsType = {
   errorBody: string;
