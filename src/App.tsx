@@ -7,7 +7,7 @@ import LoginPage from "./pages/login";
 
 const isAuth = () => {
   let user = localStorage.getItem("user");
-  console.log(user)
+  console.log(user);
   if (!user) {
     return;
   }
@@ -18,13 +18,23 @@ const isAuth = () => {
   return true;
 };
 
-console.log(  isAuth() )
+console.log("authed", isAuth());
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={ isAuth() ? <LoginPage /> : <Navigate to="/console" />} />
-      <Route path="/login" element={ isAuth() ? <LoginPage /> : <Navigate to="/console" replace={true} />} />
+      <Route
+        path="/"
+        element={
+          isAuth() ? <Navigate to="/console" replace={true} /> : <LoginPage />
+        }
+      />
+      <Route
+        path="/login"
+        element={
+          isAuth() ? <Navigate to="/console" replace={true} /> : <LoginPage />
+        }
+      />
       <Route
         path="/console"
         element={
