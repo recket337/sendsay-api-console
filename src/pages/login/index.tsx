@@ -58,9 +58,7 @@ const LoginPage: FC = () => {
 
         localStorage.setItem("user", JSON.stringify(user));
         localStorage.setItem("session", sendsay.session);
-        // redirect
         navigate("/console");
-        console.log("LOGGED");
       },
       (error) => {
         console.log(error);

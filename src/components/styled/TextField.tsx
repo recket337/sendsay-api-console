@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, memo } from "react";
 import styled from "styled-components";
 
 type TextFieldProps = {
@@ -76,4 +76,4 @@ const TextField: FC<
   );
 };
 
-export default TextField;
+export default memo(TextField);

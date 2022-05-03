@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, memo } from "react";
 import styled from "styled-components";
 import { Spinner } from "./Spinner";
 
@@ -36,8 +36,10 @@ const StyledButton = styled.button<ButtonProps>`
       linear-gradient(180deg, #45a6ff 0%, #0055fb 100%), #c4c4c4;
   }
   &:disabled {
-    background: linear-gradient(0deg, #c4c4c4, #c4c4c4),
-      linear-gradient(180deg, #45a6ff 0%, #0055fb 100%);
+    background: ${({ isLoading }) =>
+      isLoading
+        ? "linear-gradient(180deg, #45A6FF 0%, #0055FB 100%), #C4C4C4"
+        : "linear-gradient(0deg, #C4C4C4, #C4C4C4), linear-gradient(180deg, #45A6FF 0%, #0055FB 100%)"};
   }
   &:focus {
     background: linear-gradient(180deg, #45a6ff 0%, #0055fb 100%), #c4c4c4;
@@ -51,9 +53,13 @@ const Button: FC<
 > = (props) => {
   return (
     <StyledButton disabled={props.disabled ?? props.isLoading} {...props}>
-      {props.isLoading ? <Spinner /> : props.children}
+      {props.isLoading ? (
+        <Spinner style={{ marginTop: "10px" }} />
+      ) : (
+        props.children
+      )}
     </StyledButton>
   );
 };
 
-export default Button;
+export default memo(Button);
