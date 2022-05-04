@@ -7,9 +7,12 @@ import logo from "./../../assets/img/LOGO.svg";
 import { sendsay } from "../../init";
 import { useNavigate } from "react-router-dom";
 import RequestError from "./components/RequestError";
+import { isAuth } from "../../App";
 
 const LoginPage: FC = () => {
   const navigate = useNavigate();
+  // console.log(isAuth())
+  // isAuth() && navigate('/console')
 
   const [formValues, setFormValues] = useState({
     login: "",
@@ -24,21 +27,14 @@ const LoginPage: FC = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    console.log(formValues);
-    console.log(errors)
-  }, [formValues]);
-
   const handleFieldValue = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
-    console.log(typeof errors?.[e.target.name] === 'boolean')
     typeof errors?.[e.target.name] === 'boolean' && setErrors({...errors, [e.target.name]: false})
   }; 
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formValues.password || !formValues.login) {
-      console.log('error', !!formValues.password)
       setErrors({...errors, password: !formValues.password, login: !formValues.login})
       return
     }
@@ -47,18 +43,17 @@ const LoginPage: FC = () => {
     setErrors({ ...errors, request: "" });
 
     sendsay.login(formValues).then(
-      (res) => {
-        console.log(res);
+      async (res) => {
         setIsLoading(false);
-
         const user = {
           login: formValues.login,
           sublogin: sendsay.getUsername().split("/")[0],
         };
 
-        localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("session", sendsay.session);
+        await localStorage.setItem("user", JSON.stringify(user));
+        await localStorage.setItem("session", sendsay.session);
         navigate("/console");
+        console.log('redirect')
       },
       (error) => {
         console.log(error);

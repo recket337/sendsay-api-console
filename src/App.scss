@@ -1,3 +1,18 @@
+@import url(./assets/reset.css);
+
+@mixin element-color($color) {
+  background-image: url('data:image/svg+xml;utf8,<svg ...><g stroke="#{$color}" ... /></g></svg>');
+}
+
+@mixin text {
+  font-family: "SF Pro Text";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 30px;
+  color: #0d0d0d;
+}
+
 .LoginPage {
   height: 100vh;
   width: 100%;
@@ -8,12 +23,7 @@
   gap: 20px;
   background-color: #f7f7f7;
   &__headline {
-    font-family: "SF Pro Text";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 24px;
-    line-height: 30px;
-    color: #0d0d0d;
+    @include text;
   }
 }
 
@@ -57,5 +67,136 @@
       line-height: 20px;
       opacity: 0.5;
     }
+  }
+}
+
+@mixin buttonOverwrite {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-size: 16px;
+  background: transparent;
+  border: none;
+}
+
+.ConsolePage {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  &__buttonEvents {
+    box-sizing: border-box;
+    outline: none;
+    &:hover {
+      color: #0055fb;
+      img {
+        filter: invert(19%) sepia(98%) saturate(2833%) hue-rotate(216deg)
+          brightness(99%) contrast(106%);
+      }
+    }
+    &:focus {
+      color: #0055fb;
+      border: 2px solid #45a5ff;
+      border-radius: 7px;
+      img {
+        filter: invert(19%) sepia(98%) saturate(2833%) hue-rotate(216deg)
+          brightness(99%) contrast(106%);
+      }
+    }
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 10px 10px 15px;
+    background: #f6f6f6;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    &__info {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      &__title {
+        @include text;
+        font-size: 20px;
+      }
+    }
+    &__utils {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+      &__logout {
+        @include text;
+        @include buttonOverwrite;
+        @extend .ConsolePage__buttonEvents;
+        line-height: 26px;
+      }
+      &__fullscreen {
+        background-color: transparent;
+        width: 30px;
+        height: 30px;
+        border: none;
+        cursor: pointer;
+        @extend .ConsolePage__buttonEvents;
+        padding: 3px 0 0 0;
+      }
+    }
+  }
+
+  .history {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    background: #f6f6f6;
+
+    height: 50px;
+    box-sizing: border-box;
+    display: flex;
+    &__list {
+      flex-grow: 1;
+      padding: 10px 0 10px 15px;
+      background: linear-gradient(
+        269.93deg,
+        #f6f6f6 0.06%,
+        rgba(246, 246, 246, 0) 99.93%
+      );
+    }
+    &__clearButton {
+      border: none;
+      border-left: 1px solid rgba(0, 0, 0, 0.2);
+      width: 50px;
+      height: 50px;
+      background: url("./assets/img/Group\ 51.svg") no-repeat center;
+      cursor: pointer;
+      @extend .ConsolePage__buttonEvents;
+    }
+  }
+
+  .footer {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    &__format {
+      @include text;
+      @include buttonOverwrite;
+      @extend .ConsolePage__buttonEvents;
+    }
+  }
+}
+
+.UserInfo {
+  padding: 0px 15px;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  span {
+    @include text;
+    font-size: 16px;
+  }
+  .split {
+    @include text;
+    display: inline-block;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.2);
+    margin: 0 5px;
   }
 }

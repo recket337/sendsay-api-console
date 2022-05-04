@@ -5,7 +5,7 @@ import { sendsay } from "./init";
 import Console from "./pages/console";
 import LoginPage from "./pages/login";
 
-const isAuth = () => {
+export const isAuth = () => {
   let user = localStorage.getItem("user");
   console.log(user);
   if (!user) {
@@ -26,19 +26,19 @@ function App() {
       <Route
         path="/"
         element={
-          isAuth() ? <Navigate to="/console" replace={true} /> : <LoginPage />
+          isAuth() ? <Navigate to="/console" replace /> : <LoginPage />
         }
       />
       <Route
         path="/login"
         element={
-          isAuth() ? <Navigate to="/console" replace={true} /> : <LoginPage />
+          isAuth() ? <Navigate to="/console" replace /> : <LoginPage />
         }
       />
       <Route
         path="/console"
         element={
-          isAuth() ? <Console /> : <Navigate to="/login" replace={true} />
+          isAuth() ? <Console /> : <Navigate to="/login" replace />
         }
       />
     </Routes>
