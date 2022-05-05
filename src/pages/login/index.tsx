@@ -11,8 +11,7 @@ import { isAuth } from "../../App";
 
 const LoginPage: FC = () => {
   const navigate = useNavigate();
-  // console.log(isAuth())
-  // isAuth() && navigate('/console')
+
 
   const [formValues, setFormValues] = useState({
     login: "",
@@ -52,7 +51,7 @@ const LoginPage: FC = () => {
 
         await localStorage.setItem("user", JSON.stringify(user));
         await localStorage.setItem("session", sendsay.session);
-        navigate("/console");
+        // navigate("/console");
         console.log('redirect')
       },
       (error) => {

@@ -37,6 +37,7 @@
 }
 
 .optionalText {
+  font-family: "SF Pro Text";
   font-weight: 400;
   font-size: 12px;
   line-height: 20px;
@@ -81,6 +82,7 @@
 }
 
 .ConsolePage {
+
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -89,6 +91,7 @@
     box-sizing: border-box;
     outline: none;
     &:hover {
+      cursor: pointer;
       color: #0055fb;
       img {
         filter: invert(19%) sepia(98%) saturate(2833%) hue-rotate(216deg)
@@ -96,6 +99,7 @@
       }
     }
     &:focus {
+      cursor: pointer;
       color: #0055fb;
       border: 2px solid #45a5ff;
       border-radius: 7px;
@@ -109,9 +113,12 @@
   .header {
     display: flex;
     justify-content: space-between;
-    padding: 10px 10px 10px 15px;
+    align-items: center;
+    height: 50px;
+    padding-left: 15px;
     background: #f6f6f6;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+
     &__info {
       display: flex;
       gap: 20px;
@@ -121,6 +128,7 @@
         font-size: 20px;
       }
     }
+
     &__utils {
       display: flex;
       gap: 30px;
@@ -133,39 +141,102 @@
       }
       &__fullscreen {
         background-color: transparent;
-        width: 30px;
-        height: 30px;
+        width: 50px;
+        height: 50px;
         border: none;
-        cursor: pointer;
         @extend .ConsolePage__buttonEvents;
         padding: 3px 0 0 0;
       }
     }
   }
 
-  .history {
+  .historyList {
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-    background: #f6f6f6;
-
     height: 50px;
-    box-sizing: border-box;
     display: flex;
-    &__list {
-      flex-grow: 1;
-      padding: 10px 0 10px 15px;
+    overflow-x: scroll;
+    overflow-y: visible;
+    align-items: center;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    padding-left: 15px;
+    gap: 10px;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    
+    &__item {
+      height: 30px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 10px;
+      &:hover {
+        box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+      }
+      border-radius: 5px;
+      box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      background: #ffffff;
+
+      .light {
+        height: 10px;
+        width: 10px;
+        border-radius: 50%;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        box-sizing: border-box;
+      }
+      .good {
+        @extend .light;
+        background: #30b800;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+      }
+      .bad {
+        @extend .light;
+        background: #cf2c00;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+      }
+
+      .info {
+        @include text;
+        font-size: 16px;
+        display: block;
+      }
+
+      .settings {
+        display: flex;
+        align-items: center;
+        position: relative;
+        border: none;
+        padding: 0;
+        background-color: transparent;
+        @extend .ConsolePage__buttonEvents;
+      }
+    }
+
+    &__fade {
+      position: absolute;
+      pointer-events: none;
+      width: 15px;
+      height: 50px;
+      right: 50px;
       background: linear-gradient(
-        269.93deg,
+        269.98deg,
         #f6f6f6 0.06%,
         rgba(246, 246, 246, 0) 99.93%
       );
     }
-    &__clearButton {
+
+    &__clear {
+      position: absolute;
+      right: 0;
       border: none;
       border-left: 1px solid rgba(0, 0, 0, 0.2);
       width: 50px;
-      height: 50px;
+      height: 49px;
       background: url("./assets/img/Group\ 51.svg") no-repeat center;
-      cursor: pointer;
+      background-color: #f6f6f6;
       @extend .ConsolePage__buttonEvents;
     }
   }

@@ -11,6 +11,7 @@ import logout from "./../../assets/img/log-out.svg";
 import Link from "../../components/styled/Link";
 import SplittedTextarea from "../components/SplitPane";
 import UserInfo from "../components/UserIInfo";
+import History from "../components/History";
 
 const Console: FC = () => {
   const [fullcreenEnabled, toggleFullscreen] = useState(false);
@@ -42,6 +43,8 @@ const Console: FC = () => {
     toggleFullscreen(!fullcreenEnabled);
   };
 
+  // console.log('fsc', fullcreenEnabled)
+
   return (
     <div className="ConsolePage">
       <header className="header">
@@ -63,17 +66,15 @@ const Console: FC = () => {
           </button>
         </div>
       </header>
-      <section className="history">
-        <ul className="history__list"></ul>
-        <button className="history__clearButton" />
-      </section>
+      <History />
       <SplittedTextarea />
       <footer className="footer">
         <Button width="120px">Отправить</Button>
         <Link href="https://github.com/recket337">@github:recket337</Link>
         <button className="footer__format">
+        {/* JSON.stringify(JSON.parse(props.request), undefined, "\t") */}
           <img src={format} />
-          Форматировать
+          Форматировать 
         </button>
       </footer>
     </div>

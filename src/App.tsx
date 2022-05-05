@@ -26,19 +26,19 @@ function App() {
       <Route
         path="/"
         element={
-          isAuth() ? <Navigate to="/console" replace /> : <LoginPage />
+          <LoginPage /> // isAuth() ? <Navigate to="/console" replace /> :
         }
       />
       <Route
         path="/login"
         element={
-          isAuth() ? <Navigate to="/console" replace /> : <LoginPage />
+          <LoginPage /> // isAuth() ? <Navigate to="/console" replace /> :
         }
       />
       <Route
         path="/console"
         element={
-          isAuth() ? <Console /> : <Navigate to="/login" replace />
+          <Console /> //isAuth() ? <Console /> : <Navigate to="/login" replace />
         }
       />
     </Routes>
