@@ -5,13 +5,14 @@ import Link from "../../components/styled/Link";
 import TextField from "../../components/styled/TextField";
 import logo from "./../../assets/img/LOGO.svg";
 import { sendsay } from "../../init";
-import { useNavigate } from "react-router-dom";
 import RequestError from "./components/RequestError";
-import { isAuth } from "../../App";
+import { useAppDispatch } from "../../hook";
+import { setAuthenticated, setSession } from "../../store/userSlice";
+// import { isAuth } from "../../App";
 
 const LoginPage: FC = () => {
-  const navigate = useNavigate();
 
+  const dispatch = useAppDispatch();
 
   const [formValues, setFormValues] = useState({
     login: "",
@@ -31,6 +32,12 @@ const LoginPage: FC = () => {
     typeof errors?.[e.target.name] === 'boolean' && setErrors({...errors, [e.target.name]: false})
   }; 
 
+  const successLog = (session) => {
+    localStorage.setItem("session", session);
+      dispatch(setAuthenticated(true));
+      dispatch(setSession(session));
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formValues.password || !formValues.login) {
@@ -41,18 +48,9 @@ const LoginPage: FC = () => {
     setIsLoading(true);
     setErrors({ ...errors, request: "" });
 
-    sendsay.login(formValues).then(
-      async (res) => {
+    sendsay.login(formValues).then(() => {
         setIsLoading(false);
-        const user = {
-          login: formValues.login,
-          sublogin: sendsay.getUsername().split("/")[0],
-        };
-
-        await localStorage.setItem("user", JSON.stringify(user));
-        await localStorage.setItem("session", sendsay.session);
-        // navigate("/console");
-        console.log('redirect')
+        successLog(sendsay.session)
       },
       (error) => {
         console.log(error);

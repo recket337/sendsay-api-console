@@ -1,5 +1,4 @@
 import React, { FC, memo, useState } from "react";
-import { useNavigate } from "react-router-dom";
 // import { isAuth } from "../../App";
 import Button from "../../components/styled/Button";
 import { sendsay } from "../../init";
@@ -9,14 +8,13 @@ import fullsreenOff from "./../../assets/img/fscOff.svg";
 import format from "./../../assets/img/align-right.svg";
 import logout from "./../../assets/img/log-out.svg";
 import Link from "../../components/styled/Link";
-import SplittedTextarea from "../components/SplitPane";
-import UserInfo from "../components/UserIInfo";
-import History from "../components/History";
+import SplittedTextarea from "./components/SplitPane";
+import UserInfo from "./components/UserIInfo";
+import History from "./components/History";
 
 const Console: FC = () => {
   const [fullcreenEnabled, toggleFullscreen] = useState(false);
 
-  const navigate = useNavigate();
   // console.log(!isAuth)
   // !isAuth() && navigate('/console')
 
@@ -30,7 +28,7 @@ const Console: FC = () => {
       action: "logout",
     });
 
-    navigate("/login");
+    // navigate("/login");
     console.log("redirect");
   };
 

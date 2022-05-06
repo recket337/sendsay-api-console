@@ -1,15 +1,15 @@
 import React, { FC, ReactNode, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import settings from "./../../assets/img/drag-element.svg";
+import settings from "./../../../assets/img/drag-element.svg";
 
 type PropsType = {
-  label?: ReactNode;
+  handleCopy?: (e: any) => void;
 };
 
 const StyledDropdown = styled.div`
   ul {
     position: absolute;
-    top: 40px;
+    top: 42px;
     z-index: 1000;
 
     background: #ffffff;
@@ -21,7 +21,7 @@ const StyledDropdown = styled.div`
     box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
     border-radius: 3px;
     li {
-        padding: 15px;
+      padding: 15px;
       font-family: "SF Pro Text";
 
       font-weight: 400;
@@ -29,17 +29,16 @@ const StyledDropdown = styled.div`
       line-height: 20px;
       list-style: none;
       &:hover {
-          cursor:pointer;
-          
+        cursor: pointer;
       }
     }
     li:last-child {
-        border-top: 1px solid rgba(0, 0, 0, 0.2);;
+      border-top: 1px solid rgba(0, 0, 0, 0.2);
     }
   }
 `;
 
-const Dropdown: FC<PropsType> = ({ label }) => {
+const Dropdown: FC<PropsType> = ({ handleCopy }) => {
   const ref = useRef<any>();
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
@@ -70,7 +69,14 @@ const Dropdown: FC<PropsType> = ({ label }) => {
       {isOpen && (
         <ul>
           <li onClick={onOptionClicked}>Выполнить</li>
-          <li onClick={onOptionClicked}>Скопировать</li>
+          <li
+            onClick={(e) => {
+              onOptionClicked();
+              
+            }}
+          >
+            Скопировать
+          </li>
           <li onClick={onOptionClicked}>Удалить</li>
         </ul>
       )}

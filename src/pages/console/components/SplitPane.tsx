@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef } from "react";
 import SplitPane from "react-split-pane";
 import styled from "styled-components";
-import drag from "./../../assets/img/drag-element.svg"
+import drag from "./../../../assets/img/drag-element.svg"
 
 const SplitPaneStyled = styled.div`
   min-width: 800px;

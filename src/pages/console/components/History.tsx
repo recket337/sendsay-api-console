@@ -2,6 +2,7 @@ import { relative } from "path";
 import React, { FC, useEffect, useRef } from "react";
 import settings from "./../../assets/img/drag-element.svg";
 import Dropdown from "./Dropdown";
+import HistoryElement from "./HistoryElement";
 
 const History: FC = () => {
   const scroll = (e) => {
@@ -12,12 +13,7 @@ const History: FC = () => {
   return (
     <div style={{ position: "relative", width: "100%" }}>
       <ul className="historyList" onWheel={scroll}>
-        <li className="historyList__item">
-          <div className="good" />
-          <span className="info">fewfew</span>
-          <Dropdown />
-        </li>
-
+        <HistoryElement />
         <div className="historyList__fade" />
         <button className="historyList__clear" />
       </ul>

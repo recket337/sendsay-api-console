@@ -165,6 +165,28 @@
     &::-webkit-scrollbar {
       display: none;
     }
+
+    &-onCopyAnimation {
+      display: none;
+      font-family: SF Pro Text;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 20px;
+      width: 89px;
+      height: 20px;
+      padding: 0px 5px;
+      color: #0d0d0d;
+      background: #f6f6f6;
+      border-radius: 5px;
+      position: absolute;
+      z-index: 100;
+    }
+    &-onCopyAnimation-active {
+      display: flex;
+      animation: top;
+      animation-duration: 1s;
+    }
     
     &__item {
       height: 30px;
