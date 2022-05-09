@@ -47,7 +47,6 @@ const StyledTextField = styled.input<TextFieldProps>`
 const TextField: FC<
   React.InputHTMLAttributes<HTMLInputElement> & TextFieldProps
 > = (props) => {
-  console.log(props)
   const input = <StyledTextField type="text" {...props} />;
 
   return props.titleText ? (

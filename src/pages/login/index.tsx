@@ -5,11 +5,12 @@ import Link from "../../components/styled/Link";
 import TextField from "../../components/styled/TextField";
 import logo from "./../../assets/img/LOGO.svg";
 import { sendsay } from "../../init";
-import { useNavigate } from "react-router-dom";
 import RequestError from "./components/RequestError";
+import { useAppDispatch } from "../../hook";
+import { setAuthenticated, setSession } from "../../store/userSlice";
 
 const LoginPage: FC = () => {
-  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const [formValues, setFormValues] = useState({
     login: "",
@@ -24,51 +25,53 @@ const LoginPage: FC = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    console.log(formValues);
-    console.log(errors)
-  }, [formValues]);
-
   const handleFieldValue = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
-    console.log(typeof errors?.[e.target.name] === 'boolean')
-    typeof errors?.[e.target.name] === 'boolean' && setErrors({...errors, [e.target.name]: false})
-  }; 
+    typeof errors?.[e.target.name] === "boolean" &&
+      setErrors({ ...errors, [e.target.name]: false });
+  };
+
+  const successLog = (session) => {
+    console.log(typeof session);
+    localStorage.setItem("session", session);
+    dispatch(setAuthenticated(true));
+    dispatch(setSession(session));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formValues.password || !formValues.login) {
-      console.log('error', !!formValues.password)
-      setErrors({...errors, password: !formValues.password, login: !formValues.login})
-      return
+      setErrors({
+        ...errors,
+        password: !formValues.password,
+        login: !formValues.login,
+      });
+      return;
     }
-    
+
     setIsLoading(true);
     setErrors({ ...errors, request: "" });
+      let userData
+     if (formValues.sublogin) {
+      userData = { ...formValues };
+    } else {
+      userData = {login: formValues.login, password: formValues.password};
+    }
 
-    sendsay.login(formValues).then(
-      (res) => {
-        console.log(res);
+    sendsay
+      .login(formValues)
+      .then(() => {
         setIsLoading(false);
-
-        const user = {
-          login: formValues.login,
-          sublogin: sendsay.getUsername().split("/")[0],
-        };
-
-        localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("session", sendsay.session);
-        navigate("/console");
-      },
-      (error) => {
+        successLog(sendsay.session);
+      })
+      .catch((error) => {
         console.log(error);
         setIsLoading(false);
         setErrors({
           ...errors,
           request: `id: "${error?.id}", explain: "${error?.explain}"`,
         });
-      }
-    );
+      });
   };
 
   return (
