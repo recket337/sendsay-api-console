@@ -1,9 +1,9 @@
-import React, { FC, useEffect, useRef } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import SplitPane from "react-split-pane";
 import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../../../hook";
 import { setError, setRequest } from "../../../store/consoleSlice";
-import drag from "./../../../assets/img/drag-element.svg"
+import drag from "./../../../assets/img/drag-element.svg";
 
 const SplitPaneStyled = styled.div`
   min-width: 800px;
@@ -78,9 +78,9 @@ const SplittedTextarea: FC = () => {
 
   const dispatch = useAppDispatch();
 
-  const request = useAppSelector(s => s.console.request)
-  const response = useAppSelector(s => s.console.response)
-  const error = useAppSelector(s => s.console.error)
+  const request = useAppSelector((s) => s.console.request);
+  const response = useAppSelector((s) => s.console.response);
+  const error = useAppSelector((s) => s.console.error);
 
   function handleChange(e) {
     dispatch(setRequest(e.target.value));
@@ -89,9 +89,21 @@ const SplittedTextarea: FC = () => {
     }
   }
 
-  useEffect(() => {
-    console.log(splitRef?.current?.["splitPane"]?.offsetWidth - 400);
-  }, [splitRef]);
+  const [size, setSize] = React.useState<number>(0);
+
+  const resizeHandler = () => {
+    const { clientWidth } = splitRef.current.splitPane || {};
+    setSize(clientWidth);
+  };
+
+  React.useEffect(() => {
+    window.addEventListener("resize", resizeHandler);
+    resizeHandler();
+    return () => {
+      window.removeEventListener("resize", resizeHandler);
+    };
+  }, []);
+
   return (
     <SplitPaneStyled>
       {/* @ts-ignore */}
@@ -99,7 +111,7 @@ const SplittedTextarea: FC = () => {
         ref={splitRef}
         split="vertical"
         minSize={400}
-        maxSize={splitRef?.current?.["splitPane"]?.offsetWidth - 400}
+        maxSize={size - 400}
         defaultSize="50%"
         className="split"
       >
@@ -109,7 +121,7 @@ const SplittedTextarea: FC = () => {
         </div>
         <div>
           <h2>Ответ:</h2>
-          <textarea value={response} readOnly/>
+          <textarea value={response} readOnly />
         </div>
       </SplitPane>
     </SplitPaneStyled>

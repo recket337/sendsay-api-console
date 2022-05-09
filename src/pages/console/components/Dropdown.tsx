@@ -7,7 +7,9 @@ import settings from "./../../../assets/img/drag-element.svg";
 
 type PropsType = {
   data: Action;
-  handleCopy?: (e: any) => void;
+  onCopyAnimationRef: any;
+  elementRef?: any;
+  setAnimation:(is: boolean) => void;
 };
 
 const StyledDropdown = styled.div`
@@ -42,7 +44,7 @@ const StyledDropdown = styled.div`
   }
 `;
 
-const Dropdown: FC<PropsType> = ({ data }) => {
+const Dropdown: FC<PropsType> = ({ data, onCopyAnimationRef, elementRef, setAnimation }) => {
   const ref = useRef<any>();
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
@@ -67,13 +69,14 @@ const Dropdown: FC<PropsType> = ({ data }) => {
     };
   }, [isOpen]);
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(data.request);
-  };
-
   const handleExecute = () => {
     dispatch(setRequest(data.request));
     dispatch(setExecute(true));
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(data.request);
+    setAnimation(true)
   };
 
   return (
@@ -86,20 +89,26 @@ const Dropdown: FC<PropsType> = ({ data }) => {
           <li
             onClick={() => {
               onOptionClicked();
-              dispatch(setExecute(true));
+              handleExecute();
             }}
           >
             Выполнить
           </li>
           <li
-            onClick={(e) => {
+            onClick={() => {
               onOptionClicked();
               handleCopy();
             }}
           >
             Скопировать
           </li>
-          <li onClick={onOptionClicked}>Удалить</li>
+          <li
+            onClick={(e) => {
+              onOptionClicked();
+            }}
+          >
+            Удалить
+          </li>
         </ul>
       )}
     </StyledDropdown>

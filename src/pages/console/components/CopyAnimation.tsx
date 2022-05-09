@@ -1,17 +1,35 @@
-import React, { useEffect } from "react";
+import React, { FC, useEffect, useRef } from "react";
 
-export default function OnCopyAnimation(props) {
-  const ref = React.useRef<any>();
-  function hide() {
-    ref.current.classList.remove("historyList-onCopyAnimation-active");
+type PropsType = {
+  setOnCopyAnimationRef: (ref: any) => void;
+  isAnimation: boolean;
+  setAnimation: (is: boolean) => void;
+};
+
+const OnCopyAnimation: FC<PropsType> = ({ isAnimation, setAnimation }) => {
+
+  const handleAnimationEnd = () => {
+    setAnimation(false)
+    console.log('end')
   }
+
   useEffect(() => {
-    props.setOnCopyAnimationRef(ref.current);
-    ref.current.addEventListener("animationend", hide);
-  }, []);
+    console.log('here')
+    if(isAnimation) {
+      setTimeout(() => setAnimation(false), 1000)
+    }
+  }, [isAnimation])
+
   return (
-    <div ref={ref} className={"historyList-onCopyAnimation"}>
+    <div
+      className={`historyList-onCopyAnimation ${
+        isAnimation ? "historyList-onCopyAnimation-active" : ""
+      }`}
+      onAnimationEnd={handleAnimationEnd}
+    >
       Скопировано
     </div>
   );
-}
+};
+
+export default OnCopyAnimation;
