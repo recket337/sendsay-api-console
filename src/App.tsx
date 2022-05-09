@@ -7,27 +7,14 @@ import Console from "./pages/console";
 import LoginPage from "./pages/login";
 import { setAuthenticated, setSession } from "./store/userSlice";
 
-// export const isAuth = () => {
-//   let user = localStorage.getItem("user");
-//   console.log(user);
-//   if (!user) {
-//     return;
-//   }
-//   user = JSON.parse(user);
-//   if (!sendsay.session) {
-//     sendsay.setSession(localStorage.getItem("session"));
-//   }
-//   return true;
-// };
-
-// console.log("authed", isAuth());
-
 function App() {
   const [isAuthChecked, setIsAuthChecked] = useState(false);
 
   const isAuthenticated = useAppSelector(s => s.user.isAuthenticated)
+  console.log('isAuth', isAuthenticated)
   useEffect(() => {
     const session = localStorage.getItem("session");
+    console.log('session', session)
     if (session) { 
       sendsay.setSession(session);
       sendsay
@@ -47,7 +34,6 @@ function App() {
       setIsAuthChecked(true);
     }
   }, [])
-
 
   let avaliableRoute, redirect;
   if (isAuthChecked) {

@@ -1,6 +1,8 @@
 import React, { FC, useEffect, useRef } from "react";
 import SplitPane from "react-split-pane";
 import styled from "styled-components";
+import { useAppDispatch, useAppSelector } from "../../../hook";
+import { setError, setRequest } from "../../../store/consoleSlice";
 import drag from "./../../../assets/img/drag-element.svg"
 
 const SplitPaneStyled = styled.div`
@@ -73,6 +75,20 @@ const SplitPaneStyled = styled.div`
 
 const SplittedTextarea: FC = () => {
   const splitRef = useRef<any>(null);
+
+  const dispatch = useAppDispatch();
+
+  const request = useAppSelector(s => s.console.request)
+  const response = useAppSelector(s => s.console.response)
+  const error = useAppSelector(s => s.console.error)
+
+  function handleChange(e) {
+    dispatch(setRequest(e.target.value));
+    if (error.req || error.res) {
+      dispatch(setError({ req: false, res: false }));
+    }
+  }
+
   useEffect(() => {
     console.log(splitRef?.current?.["splitPane"]?.offsetWidth - 400);
   }, [splitRef]);
@@ -89,11 +105,11 @@ const SplittedTextarea: FC = () => {
       >
         <div>
           <h2>Запрос:</h2>
-          <textarea />
+          <textarea value={request} onChange={handleChange} />
         </div>
         <div>
           <h2>Ответ:</h2>
-          <textarea readOnly/>
+          <textarea value={response} readOnly/>
         </div>
       </SplitPane>
     </SplitPaneStyled>

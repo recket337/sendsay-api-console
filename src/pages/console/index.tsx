@@ -1,78 +1,80 @@
-import React, { FC, memo, useState } from "react";
+import React, { FC, memo, useEffect } from "react";
 // import { isAuth } from "../../App";
 import Button from "../../components/styled/Button";
 import { sendsay } from "../../init";
-import logo from "./../../assets/img/LOGO.svg";
-import fullsreenOn from "./../../assets/img/fullscreen.svg";
-import fullsreenOff from "./../../assets/img/fscOff.svg";
 import format from "./../../assets/img/align-right.svg";
-import logout from "./../../assets/img/log-out.svg";
 import Link from "../../components/styled/Link";
 import SplittedTextarea from "./components/SplitPane";
-import UserInfo from "./components/UserIInfo";
 import History from "./components/History";
+import { useAppDispatch, useAppSelector } from "../../hook";
+import {
+  setError,
+  setExecute,
+  setIsFetching,
+  setRequest,
+  setResponse,
+} from "../../store/consoleSlice";
+import { saveAction } from "../../store/historySlice";
+import Header from "./components/Header";
+import { validateRequest } from "../../utils";
 
 const Console: FC = () => {
-  const [fullcreenEnabled, toggleFullscreen] = useState(false);
+  const dispatch = useAppDispatch();
 
-  // console.log(!isAuth)
-  // !isAuth() && navigate('/console')
+  const history = useAppSelector((s) => s.history.actionsHistory);
+  const execution = useAppSelector((s) => s.console.execute);
 
-  const logOut = (e) => {
-    e.preventDefault();
-    localStorage.removeItem("user");
-    localStorage.removeItem("session");
-
-    sendsay.setSession(localStorage.getItem("session"));
-    sendsay.request({
-      action: "logout",
-    });
-
-    // navigate("/login");
-    console.log("redirect");
-  };
-
-  const handleFullscreen = () => {
-    if(fullcreenEnabled) {
-      document.body.requestFullscreen();
-    } else {
-      document.exitFullscreen();
+  useEffect(() => {
+    if(execution) {
+      handleSubmit();
+      dispatch(setExecute(false));
     }
-    toggleFullscreen(!fullcreenEnabled);
+  }, [execution]);
+
+  const handleFormat = () => {
+    dispatch(setRequest(JSON.stringify(JSON.parse(request), undefined, "\t")));
   };
 
-  // console.log('fsc', fullcreenEnabled)
+  const isFetching = useAppSelector((s) => s.console.isFetching);
+  const session = useAppSelector((s) => s.user.session);
+  const request = useAppSelector((s) => s.console.request);
+
+  const handleSubmit = () => {
+    if (isFetching) return;
+    if (validateRequest(request)) {
+      dispatch(setIsFetching(true));
+      sendsay.setSession(session);
+      sendsay
+        .request(JSON.parse(request))
+        .then((response) => {
+          dispatch(saveAction({ request: request, isSuccessful: true }));
+          dispatch(setResponse(JSON.stringify(response, undefined, "\t")));
+        })
+        .catch((error) => {
+          dispatch(saveAction({ request: request, isSuccessful: false }));
+          dispatch(setResponse(JSON.stringify(error, undefined, "\t")));
+          dispatch(setError({ req: false, res: true }));
+        })
+        .finally(() => dispatch(setIsFetching(false)));
+      return;
+    } else {
+      dispatch(setError({ req: true, res: false }));
+    }
+  };
 
   return (
     <div className="ConsolePage">
-      <header className="header">
-        <div className="header__info">
-          <img src={logo} />
-          <h1 className="header__info__title">API-консолька</h1>
-        </div>
-        <div className="header__utils">
-          <UserInfo />
-          <button className="header__utils__logout" onClick={logOut}>
-            Выйти
-            <img src={logout} />
-          </button>
-          <button
-            className="header__utils__fullscreen"
-            onClick={handleFullscreen}
-          >
-            <img src={fullcreenEnabled ? fullsreenOn : fullsreenOff} />
-          </button>
-        </div>
-      </header>
+      <Header />
       <History />
       <SplittedTextarea />
       <footer className="footer">
-        <Button width="120px">Отправить</Button>
+        <Button width="120px" onClick={handleSubmit}>
+          Отправить
+        </Button>
         <Link href="https://github.com/recket337">@github:recket337</Link>
-        <button className="footer__format">
-        {/* JSON.stringify(JSON.parse(props.request), undefined, "\t") */}
+        <button className="footer__format" onClick={handleFormat}>
           <img src={format} />
-          Форматировать 
+          Форматировать
         </button>
       </footer>
     </div>

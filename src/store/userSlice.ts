@@ -2,20 +2,13 @@ import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 
 type userState = {
     isAuthenticated: boolean;
-    session: any;
+    session: string | null;
 }
 
 const initialState: userState = {
     isAuthenticated: false,
     session: '',
 }
-
-// export const loginSuccess = createAsyncThunk(
-//     'user/loginSuccess',
-//     async function() {
-//         const 
-//     }
-// )
 
 const userSlice = createSlice({
     name: 'user',

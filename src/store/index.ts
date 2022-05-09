@@ -1,12 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import consoleSlice from "./consoleSlice";
 import consoleReducer from './consoleSlice';
 import userReducer from './userSlice'
+import historyReducer from './historySlice'
 
 const store = configureStore({
     reducer: {
         console: consoleReducer,
         user: userReducer,
+        history: historyReducer,
     }
 });
 

@@ -1,8 +1,12 @@
 import React, { FC, ReactNode, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { useAppDispatch } from "../../../hook";
+import { setExecute, setRequest } from "../../../store/consoleSlice";
+import { Action } from "../../../store/historySlice";
 import settings from "./../../../assets/img/drag-element.svg";
 
 type PropsType = {
+  data: Action;
   handleCopy?: (e: any) => void;
 };
 
@@ -38,7 +42,7 @@ const StyledDropdown = styled.div`
   }
 `;
 
-const Dropdown: FC<PropsType> = ({ handleCopy }) => {
+const Dropdown: FC<PropsType> = ({ data }) => {
   const ref = useRef<any>();
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
@@ -46,6 +50,8 @@ const Dropdown: FC<PropsType> = ({ handleCopy }) => {
   const onOptionClicked = () => {
     setIsOpen(false);
   };
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const checkIfClickedOutside = (e) => {
@@ -61,6 +67,15 @@ const Dropdown: FC<PropsType> = ({ handleCopy }) => {
     };
   }, [isOpen]);
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(data.request);
+  };
+
+  const handleExecute = () => {
+    dispatch(setRequest(data.request));
+    dispatch(setExecute(true));
+  };
+
   return (
     <StyledDropdown ref={ref}>
       <button onClick={toggle} className="settings">
@@ -68,11 +83,18 @@ const Dropdown: FC<PropsType> = ({ handleCopy }) => {
       </button>
       {isOpen && (
         <ul>
-          <li onClick={onOptionClicked}>Выполнить</li>
+          <li
+            onClick={() => {
+              onOptionClicked();
+              dispatch(setExecute(true));
+            }}
+          >
+            Выполнить
+          </li>
           <li
             onClick={(e) => {
               onOptionClicked();
-              
+              handleCopy();
             }}
           >
             Скопировать

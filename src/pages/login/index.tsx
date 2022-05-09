@@ -8,10 +8,8 @@ import { sendsay } from "../../init";
 import RequestError from "./components/RequestError";
 import { useAppDispatch } from "../../hook";
 import { setAuthenticated, setSession } from "../../store/userSlice";
-// import { isAuth } from "../../App";
 
 const LoginPage: FC = () => {
-
   const dispatch = useAppDispatch();
 
   const [formValues, setFormValues] = useState({
@@ -29,38 +27,51 @@ const LoginPage: FC = () => {
 
   const handleFieldValue = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
-    typeof errors?.[e.target.name] === 'boolean' && setErrors({...errors, [e.target.name]: false})
-  }; 
+    typeof errors?.[e.target.name] === "boolean" &&
+      setErrors({ ...errors, [e.target.name]: false });
+  };
 
   const successLog = (session) => {
+    console.log(typeof session);
     localStorage.setItem("session", session);
-      dispatch(setAuthenticated(true));
-      dispatch(setSession(session));
-  }
+    dispatch(setAuthenticated(true));
+    dispatch(setSession(session));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formValues.password || !formValues.login) {
-      setErrors({...errors, password: !formValues.password, login: !formValues.login})
-      return
+      setErrors({
+        ...errors,
+        password: !formValues.password,
+        login: !formValues.login,
+      });
+      return;
     }
-    
+
     setIsLoading(true);
     setErrors({ ...errors, request: "" });
+      let userData
+     if (formValues.sublogin) {
+      userData = { ...formValues };
+    } else {
+      userData = {login: formValues.login, password: formValues.password};
+    }
 
-    sendsay.login(formValues).then(() => {
+    sendsay
+      .login(formValues)
+      .then(() => {
         setIsLoading(false);
-        successLog(sendsay.session)
-      },
-      (error) => {
+        successLog(sendsay.session);
+      })
+      .catch((error) => {
         console.log(error);
         setIsLoading(false);
         setErrors({
           ...errors,
           request: `id: "${error?.id}", explain: "${error?.explain}"`,
         });
-      }
-    );
+      });
   };
 
   return (
